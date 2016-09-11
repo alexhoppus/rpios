@@ -1,6 +1,7 @@
 #ifndef BCM2836_H
 #define BCM2836_H
-#define PBASE 0x3F000000
+#define PBASE  0x3F000000
+#define VPBASE 0xF2000000
 #endif
 //-------------------------------------------------------------------------
 //

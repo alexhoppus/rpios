@@ -1,5 +1,20 @@
 #include "lib.h"
 
+void memset(void *b, const unsigned char c, int len)
+{
+	unsigned char *p = (unsigned char *)b;
+	while (len > 0) {
+		*p = c;
+		p++;
+		len--;
+	}
+}
+
+int panic(const char *panic_str)
+{
+	return 0;
+}
+
 size_t strlen(const char* str)
 {
 	size_t ret = 0;
@@ -24,13 +39,13 @@ int pow(int x, unsigned int y)
 	if( y == 0)
 		return 1;
 	int t = pow(x, y / 2);
-	if (y % 2 == 0) 
+	if (y % 2 == 0)
 		return t * t;
 	else
 		return x * t * t;
 }
 
-char *string_reverse(char *str) 
+char *string_reverse(char *str)
 {
 	if (!*str)
 		return (str);
@@ -48,10 +63,11 @@ char *string_reverse(char *str)
 #define LAST_NUM_ASCII '9'
 #define DECIMAL_BASE 10
 
+/*TODO: Implement common converter*/
 int str_to_int(const char *str)
 {
 	int ret = 0;
-	for (int i = 0; i < strlen(str); i++) {
+	for (int i = 0; i < (int)strlen(str); i++) {
 		if ((str[i] < FIRST_NUM_ASCII) || (str[i] > LAST_NUM_ASCII))
 			return -1;
 		ret += (str[i] - FIRST_NUM_ASCII) * pow(DECIMAL_BASE, (strlen(str) - i - 1));
@@ -59,19 +75,49 @@ int str_to_int(const char *str)
 	return ret;
 }
 
-void int_to_str(char *str, int val)
+char* int_to_str(char *str, unsigned long val, int base)
 {
 	int i = 0;
 	int nval = val;
-	bool is_neg = val < 0;
+	char ascii[] = {"0123456789ABCDEF"};
+
+	if (base != 10 && base != 16)
+		return NULL;
+
 	while (nval) {
-		nval = val / DECIMAL_BASE;
-		int digit = val - nval * DECIMAL_BASE;
-		str[i++] = (FIRST_NUM_ASCII + digit);
+		nval = div(val, base);
+		int digit = val - nval * base;
+		str[i++] = ascii[digit];
 		val = nval;
 	};
-	if (is_neg)
-		str[i++] = '-';
 	str[i] = 0;
 	string_reverse(str);
+	return str;
+}
+
+/*TODO: That is not good, implement aeabi_udiv3 natively in asm */
+uint32_t div(uint32_t n, uint32_t d)
+{
+	uint32_t q = 0, r = 0;
+	int i;
+	if (d == 1)
+		return n;
+	if (d == 0)
+		panic("Zero division\n");
+
+	if (is_pow_of_two(d)) {
+		int shift = 0;
+		while (d >>= 1) {shift++;};
+		return n >> shift;
+	}
+
+	for(i = 31; i >= 0; i--){
+		r = r << 1;
+		r = r | ((n >> i) & 1);
+		if(r >= d) {
+			r = r - d;
+			q = q | (1 << i);
+		}
+	}
+	return q;
 }

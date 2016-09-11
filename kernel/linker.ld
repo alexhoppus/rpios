@@ -3,10 +3,10 @@ ENTRY(_start)
 SECTIONS
 {
     /* Starts at LOADER_ADDR. */
-    . = 0x32000;
+    . = 0xc0032000;
     __start = .;
     __text_start = .;
-    .text :
+    .text : AT(0x32000)
     {
         KEEP(*(.text.boot))
         *(.text)
@@ -38,5 +38,15 @@ SECTIONS
     }
     . = ALIGN(4096); /* align to page size */
     __bss_end = .;
-    __end = .;
+
+    __init_array_start = .;
+    .init_array :
+    {
+	    KEEP (*(.init_array))
+	    *(.init_array)
+    }
+    . = ALIGN(4);
+    __init_array_end = .;
+
+   __end = .;
 }
