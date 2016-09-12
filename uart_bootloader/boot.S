@@ -25,6 +25,7 @@ add_handler_1C: .word handler_1C
 #define SVC_MODE  0x13
 #define IRQ_MODE  0x12
 #define FIQ_MODE  0x11
+#define MODE_MASK 0x1F
 
 #define I_BIT (1 << 7)
 #define F_BIT (1 << 6)
@@ -35,18 +36,19 @@ add_handler_1C: .word handler_1C
 .endm
 
 reset:
-	// Assume we are in HYP mode
 	mrs	r0, cpsr
-	bic	r0, r0, #0x1F				
+	eor	r0, r0, #HYP_MODE
+	tst	r0, #MODE_MASK
+	bic	r0, r0, #MODE_MASK
 	orr	r0, r0, #SVC_MODE|I_BIT|F_BIT
+	bne	2f
 	orr	r0, r0, #0x100
 	adr	lr, 3f
 	msr	spsr_cxsf, r0
-	msr 	ELR_hyp, lr
-	// Switch to SVC mode
-	eret							     
+	msr     ELR_hyp, lr
+	eret
+2:	msr cpsr_c, r0
 3:
-
 	// Setup stack for modes
 	setup_stack #UND_MODE|I_BIT|F_BIT, #0x2000
 	setup_stack #DAB_MODE|I_BIT|F_BIT, #0x4000
