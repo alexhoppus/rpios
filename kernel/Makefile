@@ -1,4 +1,4 @@
-CFLAGS=-O2 -fno-exceptions -fno-rtti -fno-stack-protector -ffreestanding -fpic -nostdlib -Wall
+CFLAGS=-O2 -fno-exceptions -fno-rtti -fno-stack-protector -ffreestanding -fpic -nostdlib -Wall -DVPBASE=0xf2000000 -DPBASE=0x3f000000
 CC=$(CROSS_COMPILE)g++
 EXECUTABLE=kernel
 
@@ -11,10 +11,10 @@ boot.o: boot.S
 	$(CC) $(CFLAGS) -c boot.S
 
 main.o: main.cpp
-	$(CC) $(CFLAGS) -c main.cpp -DRPI2
+	$(CC) $(CFLAGS) -c main.cpp
 
 uart.o: uart/uart.cpp
-	$(CC) $(CFLAGS) -c uart/uart.cpp -DRPI2
+	$(CC) $(CFLAGS) -c uart/uart.cpp
 
 lib.o: common/lib.cpp
 	$(CC) $(CFLAGS) -c common/lib.cpp
@@ -23,7 +23,7 @@ mmu.o: mm/mmu.cpp
 	$(CC) $(CFLAGS) -c mm/mmu.cpp
 
 mm.o: mm/mm.cpp
-	$(CC) $(CFLAGS) -c mm/mm.cpp -DRPI2
+	$(CC) $(CFLAGS) -c mm/mm.cpp
 
 console.o: console/console.cpp
 	$(CC) $(CFLAGS) -c console/console.cpp

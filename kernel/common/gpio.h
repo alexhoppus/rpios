@@ -1,10 +1,5 @@
 #ifndef GPIO_H
 #define GPIO_H
-#ifdef RPI2
-#include "../common/arch/BCM2836.h" /* Raspberriy Pi 2 */
-#else
-#include "../common/arch/BCM2835.h" /* Original B,A,A+,B+ */
-#endif
 #include "../common/mmio.h"
 
 #define GPFSEL1         (VPBASE + 0x00200004)
