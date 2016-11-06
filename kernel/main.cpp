@@ -46,26 +46,12 @@ void kernel_main(uint32_t r0, uint32_t r1, uint32_t atags)
 	(void) r1;
 	(void) atags;
 	global_constructors_init();
-
 	/* Lowmem mapping */
 	kern.mm.early_vm_map();
 	/* Console init */
 	kern.cons.init();
 	// TODO: Think about exception handling class
 	install_vector_table();
-	{
-		char str[30];
-		uint32_t first_pval = *(uint32_t *)(0x32000);
-		uint32_t first_vval = *(uint32_t *)(KERNBASE + 0x32000);
-		if (first_pval != first_vval) {
-			kern.uart.puts("MMU early init failed\n");
-			kern.uart.puts(int_to_str(str, first_pval, 16));
-			kern.uart.puts("\n");
-			kern.uart.puts(int_to_str(str, first_vval, 16));
-		} else {
-			kern.cons.cprintf("MMU early init OK\n");
-		}
-	}
 	kern.mm.palloc.init_page_list();
 
 
