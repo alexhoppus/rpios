@@ -48,7 +48,7 @@ void kernel_main(uint32_t r0, uint32_t r1, uint32_t atags)
 	global_constructors_init();
 
 	/* Lowmem mapping */
-	kern.mm.init();
+	kern.mm.early_vm_map();
 	/* Console init */
 	kern.cons.init();
 	// TODO: Think about exception handling class
@@ -65,8 +65,8 @@ void kernel_main(uint32_t r0, uint32_t r1, uint32_t atags)
 		} else {
 			kern.cons.cprintf("MMU early init OK\n");
 		}
-		while (1) {};
 	}
+	kern.mm.palloc.init_page_list();
 
 
 }

@@ -32,26 +32,35 @@ typedef uint32_t pde_t;
 typedef uint32_t pte_t;
 
 #define PAGE_SIZE	4096
-#define PGSHIFT		12
+#define PAGE_SHIFT		12
 
 #define KERNBASE	0xC0000000
 #define KPGD_BASE	0x20000
+#define KPGD_END	0x24000
 
 #define INITMAP		(1 << 20)
 
 #define RAM_OVERALL 0x40000000
-#define LOWMEM_RAM  0x10000000
+#define EARLY_RAM   0x6400000
 #define PERIPH_SIZE 0x01000000
 extern char __end[];
 
 struct page {
+	/* Next page */
+	struct page *p_next;
 	/* Reference counter */
 	uint16_t ref_cnt;
 };
 
-// TODO: List of pages
 class page_allocator {
-
+private:
+	char *boot_nextfree;
+	struct page *page_list;
+	struct page *free_page_list;
+public:
+	void *boot_alloc(uint32_t n);
+	void init_page_list();
+	page_allocator() : boot_nextfree((char *)round_up((uint32_t)__end, PAGE_SIZE)), free_page_list(NULL) {};
 };
 
 class memory_manager {
@@ -60,7 +69,17 @@ private:
 public:
 	page_allocator palloc;
 	memory_manager() {};
-	void init();
+	void early_vm_map();
 	void section_set_region(uintptr_t va, uintptr_t pa, size_t len, uint32_t attrs);
 };
+
+static inline uint32_t virt_to_phys(uint32_t virt_addr)
+{
+	return virt_addr - KERNBASE;
+}
+
+static inline uint32_t phys_to_virt(uint32_t phys_addr)
+{
+	return phys_addr + KERNBASE;
+}
 #endif
