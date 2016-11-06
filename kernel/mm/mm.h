@@ -49,6 +49,9 @@ typedef uint32_t pte_t;
 #define PERIPH_SIZE 0x01000000
 extern char __end[];
 
+typedef uint32_t alloc_mask;
+#define ALLOC_ZERO 0x1
+
 struct page {
 	/* Next page */
 	struct page *p_next;
@@ -59,12 +62,15 @@ struct page {
 class page_allocator {
 private:
 	char *boot_nextfree;
-	struct page *page_list;
-	struct page *free_page_list;
 public:
+	static struct page *page_list;
+	static struct page *free_page_list;
+
 	void *boot_alloc(uint32_t n);
 	void init_page_list();
-	page_allocator() : boot_nextfree((char *)round_up((uint32_t)__end, PAGE_SIZE)), free_page_list(NULL) {};
+	struct page *alloc_page(alloc_mask mask);
+	void free_page(struct page *page);
+	page_allocator() : boot_nextfree((char *)round_up((uint32_t)__end, PAGE_SIZE)) {};
 };
 
 class memory_manager {
@@ -72,7 +78,7 @@ private:
 	pde_t *kpgd;
 public:
 	page_allocator palloc;
-	memory_manager() {};
+	memory_manager() : kpgd((pde_t *)KPGD_BASE) {};
 	void early_vm_map();
 	void section_set_region(uintptr_t va, uintptr_t pa, size_t len, uint32_t attrs);
 };
@@ -86,4 +92,15 @@ static inline uint32_t phys_to_virt(uint32_t phys_addr)
 {
 	return phys_addr + KERNBASE;
 }
+
+static inline uint32_t page_to_phys(struct page *page)
+{
+	return (page - page_allocator::page_list) << PAGE_SHIFT;
+}
+static inline uint32_t page_to_virt(struct page *page)
+{
+	return phys_to_virt(page_to_phys(page));
+}
+
+
 #endif

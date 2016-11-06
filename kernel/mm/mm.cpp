@@ -2,11 +2,14 @@
 #include "../common/kernel.h"
 #include "../common/lib.h"
 
+struct page *page_allocator::page_list = NULL;
+struct page *page_allocator::free_page_list = NULL;
+
 void memory_manager::early_vm_map()
 {
 	kpgd = (pte_t *) KPGD_BASE;
 	/* Map low memory */
-	section_set_region(KERNBASE, 0, EARLY_RAM, AP_KO | MAP_CACHE | MAP_BUF);
+	section_set_region(KERNBASE, 0, RAM_OVERALL, AP_KO | MAP_CACHE | MAP_BUF);
 	/* Map periph. */
 	section_set_region(VPBASE, PBASE, PERIPH_SIZE, AP_KO);
 }
@@ -33,7 +36,7 @@ void *page_allocator::boot_alloc(uint32_t n)
 		return boot_nextfree;
 	char *saved_nextfree = boot_nextfree;
 	boot_nextfree += PAGE_SIZE * (((n - 1) >> PAGE_SHIFT) + 1);
-	if ((uint32_t) boot_nextfree > KERNBASE + EARLY_RAM)
+	if ((uint32_t) boot_nextfree > KERNBASE + RAM_OVERALL)
 		panic("boot_alloc: Out of memory");
 	return (void *)saved_nextfree;
 }
@@ -55,6 +58,24 @@ void page_allocator::init_page_list() {
 	}
 	kern.cons.cprintf("n_pages:         %d\n", n_pages);
 	kern.cons.cprintf("pages_available: %d\n", pages_available);
-
 }
 
+struct page *page_allocator::alloc_page(alloc_mask mask)
+{
+	struct page *next_free_page = free_page_list;
+	if (!next_free_page)
+		return NULL;
+	free_page_list = next_free_page->p_next;
+	if (mask & ALLOC_ZERO)
+		memset((void *)page_to_virt(next_free_page), 0, PAGE_SIZE);
+	return next_free_page;
+}
+
+void page_allocator::free_page(struct page *page)
+{
+	if (--page->ref_cnt == 0) {
+		page->p_next = free_page_list;
+		free_page_list = page;
+	}
+	bug_on(page->ref_cnt < 0);
+}
