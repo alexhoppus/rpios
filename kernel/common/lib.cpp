@@ -1,4 +1,5 @@
 #include "lib.h"
+#include "../common/kernel.h"
 
 void memset(void *b, const unsigned char c, int len)
 {
@@ -10,10 +11,6 @@ void memset(void *b, const unsigned char c, int len)
 	}
 }
 
-int panic(const char *panic_str)
-{
-	return 0;
-}
 
 size_t strlen(const char* str)
 {

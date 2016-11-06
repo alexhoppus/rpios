@@ -25,7 +25,6 @@ void memory_manager::section_set_region(uintptr_t va, uintptr_t pa, size_t len, 
 
 void *page_allocator::boot_alloc(uint32_t n)
 {
-	kern.cons.cprintf("boot_nextfree %lx\n", boot_nextfree);
 	if (!boot_nextfree)
 		boot_nextfree = (char *)round_up((uint32_t) __end, PAGE_SIZE);
 	if (n < 0)

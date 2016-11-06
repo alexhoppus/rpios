@@ -7,7 +7,18 @@
 #include <stddef.h>
 #include <stdint.h>
 
-int panic(const char *str);
+#define panic(format, ...) \
+do { \
+	kern.cons.cprintf(format, ##__VA_ARGS__); \
+	while (1) {}; \
+} while(0)
+
+#define bug_on(cond) \
+do { \
+	if (cond) \
+		panic("BUG: function %s line %d condition %s\n", __func__, __LINE__, #cond);\
+} while(0)
+
 size_t strlen(const char* str);
 int memcmp(const void *s1, const void *s2, size_t n);
 int str_to_int(const char *str);

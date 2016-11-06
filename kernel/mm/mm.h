@@ -2,10 +2,14 @@
 #define MM_H
 #include <stddef.h>
 #include <stdint.h>
+#include "../common/lib.h"
 
 /* Page table entry represent section mapping
  * i.e. 1MB section*/
 #define SECTION_TYPE	0x2
+/* Page table entry represent page table mapping
+ * i.e. 1MB is described by this page table*/
+#define PAGE_TABLE_TYPE	0x1
 /* Page table entry represents second level page
  * table base address*/
 #define PAGE_TYPE	0x1
