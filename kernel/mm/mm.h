@@ -36,18 +36,43 @@ typedef uint32_t pde_t;
 typedef uint32_t pte_t;
 
 #define PAGE_SIZE	4096
-#define PAGE_SHIFT		12
+#define PAGE_SHIFT	12
 
 #define KERNBASE	0xC0000000
 #define KPGD_BASE	0x20000
 #define KPGD_END	0x24000
 
-#define INITMAP		(1 << 20)
-
-#define RAM_OVERALL 0x40000000
-#define EARLY_RAM   0x6400000
-#define PERIPH_SIZE 0x01000000
+#define RAM_OVERALL	PBASE
+#define PERIPH_SIZE	0x01000000
 extern char __end[];
+
+/*          Boot memory MAP
+ *
+ *
+ *--------------------------------
+ *
+ *		page_list
+ *
+ *--------------------------------__end[]
+ *
+ *
+ *      Binary sections (.text, ...)
+ *-------------------------------- 0xc0032000
+ *
+ *	SVC mode stack
+ *-------------------------------- 0xc0028000
+ *
+ *	Data abort stack
+ *-------------------------------- 0xc0026000
+ *
+ *	Undefined mode stack
+ *-------------------------------- 0xc0024000
+ *
+ *   Kernel page directory, lvl 1
+ *-------------------------------- 0xc0020000
+ *
+ *		KERNBASE
+ *-------------------------------- 0xc0000000 */
 
 typedef uint32_t alloc_mask;
 #define ALLOC_ZERO 0x1
