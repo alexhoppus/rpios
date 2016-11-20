@@ -18,7 +18,7 @@ public:
 	mmu_device mmu;
 	/* Core kernel subsystems */
 	/* Console */
-	console cons;
+	console *cons;
 	/* Memory manager */
 	memory_manager mm;
 };

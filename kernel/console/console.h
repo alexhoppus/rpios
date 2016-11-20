@@ -5,8 +5,8 @@ private:
 	void printnum(unsigned long long num, unsigned base);
 public:
 	console() {};
-	void init();
-	void putchar(unsigned char ch);
+	virtual void init() = 0;
+	virtual void putc(unsigned char ch) = 0;
 	int cprintf(const char *fmt, ...);
 };
 #endif

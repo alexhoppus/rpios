@@ -15,4 +15,9 @@ void __cxa_end_cleanup(void) {};
 extern "C"
 #endif
 void __gxx_personality_v0(void) {};
+
+#if defined(__cplusplus)
+extern "C"
+#endif
+void __cxa_pure_virtual() {while (1);}
 #endif

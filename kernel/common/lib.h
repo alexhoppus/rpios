@@ -9,7 +9,7 @@
 
 #define panic(format, ...) \
 do { \
-	kern.cons.cprintf(format, ##__VA_ARGS__); \
+	kern.cons->cprintf(format, ##__VA_ARGS__); \
 	while (1) {}; \
 } while(0)
 

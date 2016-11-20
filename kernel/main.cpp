@@ -25,7 +25,7 @@ void exception_handler(uint32_t r0)
 {
 	uint32_t lr;
 	asm volatile("mov %[r], lr": [r]"=r" (lr)::);;
-	kern.cons.cprintf("Exception with code %x occured at address %x\n", r0, lr);
+	kern.cons->cprintf("Exception with code %x occured at address %x\n", r0, lr);
 	while(1){};
 }
 
@@ -48,8 +48,9 @@ void kernel_main(uint32_t r0, uint32_t r1, uint32_t atags)
 	global_constructors_init();
 	/* Lowmem mapping */
 	kern.mm.early_vm_map();
-	/* Console init */
-	kern.cons.init();
+	/* Setup UART as main console */
+	kern.cons = &kern.uart;
+	kern.cons->init();
 	// TODO: Think about exception handling class
 	install_vector_table();
 	kern.mm.palloc.init_page_list();

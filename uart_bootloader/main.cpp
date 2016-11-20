@@ -60,11 +60,9 @@ extern "C"
 void bootloader_main(void)
 {
 	unsigned long try_ctr = 0;
-	const int bit_format = 8;
-	const int baudrate = 115200;
 	rpi2_uart_device uart;
 	guart = &uart;
-	uart.init(bit_format, baudrate);
+	uart.init();
 	uart.puts("Waiting for image data on UART\n");
 	while(true) {
 		if (!memcmp(magic, BOOTLOADER_MAGIC, (size_t) BOOTLOADER_MAGIC_LEN)) {

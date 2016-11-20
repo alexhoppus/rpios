@@ -29,11 +29,6 @@ static long long getint(va_list *ap, int lflag)
 		return va_arg(*ap, int);
 }
 
-void console::init()
-{
-	kern.uart.init(8, 115200);
-}
-
 // TODO: Introduce normal div, moddiv and 64bit div
 // TODO: This works incorrectly because of no 64 bit div support
 void console::printnum(unsigned long long num, unsigned base)
@@ -44,15 +39,9 @@ void console::printnum(unsigned long long num, unsigned base)
 		printnum(div((uint32_t)num, (uint32_t) base), base);
 	// then print this (the least significant) digit
 	digit_index = num - div((uint32_t)num, base) * base;
-	putchar("0123456789abcdef"[digit_index]);
+	putc("0123456789abcdef"[digit_index]);
 }
 
-void console::putchar(unsigned char ch)
-{
-	kern.uart.putc(ch);
-}
-
-// TODO: use virtual functions here, remove wide switch case statement
 int console::cprintf(const char *fmt, ...)
 {
 	va_list ap;
@@ -67,8 +56,8 @@ int console::cprintf(const char *fmt, ...)
 			if (ch == '\0')
 				return cnt;
 			if (ch == '\n')
-				putchar('\r');
-			putchar(ch);
+				putc('\r');
+			putc(ch);
 		}
 reswitch:
 		switch (ch = *(unsigned char *) fmt++) {
@@ -78,7 +67,7 @@ reswitch:
 			case 'd':
 				num = getint(&ap, lflag);
 				if ((long long) num < 0) {
-					putchar('-');
+					putc('-');
 					num = -(long long) num;
 				}
 				base = 10;
@@ -90,14 +79,14 @@ reswitch:
 			case 'x':
 				num = getuint(&ap, lflag);
 				base = 16;
-				putchar('0');
-				putchar('x');
+				putc('0');
+				putc('x');
 				goto number;
 			case 's':
 				if ((p = va_arg(ap, char *)) == NULL)
 					p = "(null)";
 				while ((ch = *p++) != '\0')
-					putchar(ch);
+					putc(ch);
 				break;
 number:
 				printnum(num, base);

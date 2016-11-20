@@ -56,8 +56,8 @@ void page_allocator::init_page_list() {
 			pages_available++;
 		}
 	}
-	kern.cons.cprintf("n_pages:         %d\n", n_pages);
-	kern.cons.cprintf("pages_available: %d\n", pages_available);
+	kern.cons->cprintf("n_pages:         %d\n", n_pages);
+	kern.cons->cprintf("pages_available: %d\n", pages_available);
 }
 
 struct page *page_allocator::alloc_page(alloc_mask mask)

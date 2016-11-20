@@ -10,16 +10,16 @@
 #include "../common/mmio.h"
 #include "../common/gpio.h"
 #include "../common/auxillary.h"
+#include "../console/console.h"
 
-
-class rpi2_uart_device {
+class rpi2_uart_device : public console {
 public:
 	rpi2_uart_device();
         void putc(unsigned char c);
 	unsigned char getc();
 	void puts(const char* str);
 	void arr_write(const unsigned char* buffer, size_t size);
-	void init(int bit_fmt, int baudrate);
+	void init();
 private:
 	int bit_fmt;
 	int baudrate;

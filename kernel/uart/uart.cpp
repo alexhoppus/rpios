@@ -10,8 +10,9 @@ rpi2_uart_device::rpi2_uart_device() : aux_mu_io_reg(AUX_MU_IO_REG), aux_mu_ier_
 {
 };
 
-void rpi2_uart_device::init(int bit_fmt, int baudrate)
+void rpi2_uart_device::init()
 {
+	int bit_fmt = 8, baudrate = 115200;
 	uint32_t aux_mu_lcr_reg_val = 0, aux_mu_iir_reg_val = 0,
 		 aux_mu_baud_reg_val = 0, aux_mu_cntl_reg_val = 0;
 	/*
