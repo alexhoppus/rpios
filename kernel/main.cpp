@@ -36,6 +36,7 @@ void install_vector_table()
 	kern.mmu.isb();
 }
 
+extern char _binary_app_start[];
 
 #if defined(__cplusplus)
 extern "C"
