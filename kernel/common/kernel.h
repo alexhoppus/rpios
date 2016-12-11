@@ -17,5 +17,6 @@ extern rpi2_uart_device uart;
 extern console *cons;
 /* Memory manager */
 extern memory_manager mm;
-
+/* Scheduler */
+extern scheduler sc;
 #endif

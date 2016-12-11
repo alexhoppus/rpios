@@ -59,4 +59,16 @@ void kernel_main(uint32_t r0, uint32_t r1, uint32_t atags)
 
 	mm.palloc.init_page_list();
 	check_mm();
+
+	sc.init_task_list();
+	task *t1 = sc.alloc_task();
+	t1->init_vm();
+	t1->load_binary(_binary_app1_start);
+
+	task *t2 = sc.alloc_task();
+	t2->init_vm();
+	t2->load_binary(_binary_app2_start);
+
+	sc.run();
+	while(1) {};
 }

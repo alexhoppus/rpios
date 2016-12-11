@@ -1,6 +1,7 @@
 #include "mm.h"
 #include "../common/kernel.h"
 #include "../common/lib.h"
+#include "../sched/sched.h"
 
 struct page *page_allocator::page_list = NULL;
 struct page *page_allocator::free_page_list = NULL;
