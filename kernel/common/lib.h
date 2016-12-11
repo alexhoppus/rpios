@@ -21,6 +21,7 @@ do { \
 
 size_t strlen(const char* str);
 int memcmp(const void *s1, const void *s2, size_t n);
+void *memcpy(void *dst, const void *src, size_t n);
 int str_to_int(const char *str);
 int pow(int x, unsigned int y);
 char* int_to_str(char *str, unsigned long val, int base);
