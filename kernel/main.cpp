@@ -33,7 +33,6 @@ extern uint32_t vec_table;
 void install_vector_table()
 {
 	asm volatile("mcr p15, 0, %[r], c12, c0, 0": :[r]"r" (&vec_table):);
-	kern.mmu.isb();
 }
 
 extern char _binary_app_start[];
