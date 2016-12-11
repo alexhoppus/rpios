@@ -57,6 +57,7 @@ int console::cprintf(const char *fmt, ...)
 				putc('\r');
 			putc(ch);
 		}
+		lflag = 0;
 reswitch:
 		switch (ch = *(unsigned char *) fmt++) {
 			case 'l':
