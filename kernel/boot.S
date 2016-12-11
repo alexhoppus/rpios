@@ -16,21 +16,22 @@
 
 .macro setup_stack mode, base_stack
 	msr cpsr, \mode
-	mov sp, \base_stack
+	ldr sp, \base_stack
 .endm
 
 #define KPGD_BASE 0x20000
-#define AP_KO (0x01 << 10)
+#define AP_KRW (0x1 << 10)
 #define SECTION_TYPE 0x2
 #define VIRTUAL_BASE 0xc0000000
 #define SCTLR_M (1 << 0)
 periph_base: .word 0x3f200000
 virtual_base: .word 0xc0000000
+
 // We assume that KPGD (kernel page dir) placed at 0x20000
 // address. This functions set initial one-megabyte mapping
 // 0x00000000 -> 0xc0000000
 .macro create_page_table
-	mov r0, #AP_KO
+	mov r0, #AP_KRW
 	orr r1, r0, #SECTION_TYPE
 	mov r3, #KPGD_BASE
 	ldr r4, virtual_base
@@ -42,7 +43,7 @@ virtual_base: .word 0xc0000000
 	ldr r1, periph_base
 	lsr r4, r4, #20
 
-	orr r1, r1, #AP_KO
+	orr r1, r1, #AP_KRW
 	orr r1, r1, #SECTION_TYPE
 	str r1, [r3, r4, lsl #2]
 .endm
@@ -54,8 +55,10 @@ virtual_base: .word 0xc0000000
 	mcr p15, 0, r2, c8, c7, 0
 	mcr p15, 0, r2, c7, c10, 4
 
-	// Domain access control
-	mvn r2, #0
+	// For domain 0:
+	// Accesses are checked against the permission
+	// bits in the translation tables
+	mov r2, #0x1
 	mcr p15, 0, r2, c3, c0, 0
 
 	// Setting TTBR registers
@@ -69,13 +72,12 @@ virtual_base: .word 0xc0000000
 	mcr p15, 0, r2, c1, c0, 0
 .endm
 
-
 .globl _start
 _start:
 	// Setup stack for modes
-	setup_stack #UND_MODE|I_BIT|F_BIT, #0x26000
-	setup_stack #DAB_MODE|I_BIT|F_BIT, #0x28000
-	setup_stack #SVC_MODE|I_BIT|F_BIT, #0x32000
+	setup_stack #UND_MODE|I_BIT|F_BIT, und_stack
+	setup_stack #DAB_MODE|I_BIT|F_BIT, dab_stack
+	setup_stack #SVC_MODE|I_BIT|F_BIT, svc_stack
 
 	// Clear out bss.
 	ldr r4, =__bss_start
@@ -145,5 +147,10 @@ vec_handler 10
 vec_handler 14
 vec_handler 18
 vec_handler 1C
+
+und_stack: .word 0xc0026000
+dab_stack: .word 0xc0028000
+svc_stack: .word 0xc0032000
+
 
 

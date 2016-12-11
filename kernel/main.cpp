@@ -57,4 +57,6 @@ void kernel_main(uint32_t r0, uint32_t r1, uint32_t atags)
 	kern.mm.palloc.init_page_list();
 
 
+	mm.palloc.init_page_list();
+	check_mm();
 }

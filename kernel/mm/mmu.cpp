@@ -79,3 +79,12 @@ void mmu_device::tlb_flush_all(void)
 	uint32_t reg = 0;
 	asm volatile("mcr p15, 0, %[r], c8, c7, 0" : :[r]"r" (reg):);
 };
+
+void mmu_device::tlb_flush_va(uint32_t reg)
+{
+	reg &= (~0xFFF);
+	/* TLB invalidate U MVA (shareable) */
+	asm volatile("mcr p15, 0, %[r], c8, c3, 1": :[r]"r" (reg):);
+	/* TLB invalidate U MVA */
+	asm volatile("mcr p15, 0, %[r], c8, c7, 1": :[r]"r" (reg):);
+};

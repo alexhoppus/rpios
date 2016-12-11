@@ -31,6 +31,7 @@ public:
 	/* TLB flushing */
 	/* Invalidate all entries */
 	void tlb_flush_all();
+	void tlb_flush_va(uint32_t reg);
 
 	/* Barriers */
 	void isb(void);
