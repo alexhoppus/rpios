@@ -82,3 +82,5 @@ void rpi2_uart_device::puts(const char* str)
 {
 	arr_write((const unsigned char*) str, strlen(str));
 }
+
+rpi2_uart_device uart;

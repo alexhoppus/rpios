@@ -3,8 +3,6 @@
 #include "../common/kernel.h"
 #include "../common/lib.h"
 
-extern kernel kern;
-
 // Get an unsigned int of various possible sizes from a varargs list,
 // depending on the lflag parameter.
 static unsigned long long getuint(va_list *ap, int lflag)
@@ -96,4 +94,6 @@ number:
 	va_end(ap);
 	return cnt;
 }
+
+console *cons;
 

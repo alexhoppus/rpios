@@ -9,9 +9,26 @@
 
 #define panic(format, ...) \
 do { \
-	kern.cons->cprintf(format, ##__VA_ARGS__); \
+	cons->cprintf(format, ##__VA_ARGS__); \
 	while (1) {}; \
 } while(0)
+
+#define printk(format, ...) \
+do { \
+	cons->cprintf(format, ##__VA_ARGS__); \
+} while(0)
+
+#if DEBUG
+#define dprintk(format, ...) \
+do { \
+	cons->cprintf("[%s:%d] ", __func__, __LINE__); \
+	cons->cprintf(format, ##__VA_ARGS__); \
+} while(0)
+#else
+#define dprintk(format, ...) \
+do { \
+} while(0)
+#endif
 
 #define bug_on(cond) \
 do { \
