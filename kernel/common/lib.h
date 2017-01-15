@@ -6,6 +6,7 @@
 #endif
 #include <stddef.h>
 #include <stdint.h>
+#include "mmio.h"
 
 #define panic(format, ...) \
 do { \
@@ -32,8 +33,9 @@ do { \
 
 #define bug_on(cond) \
 do { \
-	if (cond) \
-		panic("BUG: function %s line %d condition %s\n", __func__, __LINE__, #cond);\
+	if (!cond)  { \
+		asm volatile(".word 0xdeaddead"); \
+	} \
 } while(0)
 
 size_t strlen(const char* str);
