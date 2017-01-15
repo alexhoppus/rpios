@@ -32,11 +32,9 @@ extern "C" void kernel_main(uint32_t r0, uint32_t r1, uint32_t atags)
 	cons = &uart;
 	cons->init();
 
-	// TODO: Think about exception handling class
 	install_vector_table();
 
-
-	mm.palloc.init_page_list();
+	mm.palloc.mem_init();
 	check_mm();
 
 	sc.init_task_list();

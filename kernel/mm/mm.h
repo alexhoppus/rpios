@@ -127,11 +127,11 @@ class page_allocator {
 private:
 	char *boot_nextfree;
 public:
-	static struct page *page_list;
+	static struct page *page_arr;
 	static struct page *free_page_list;
 
 	void *boot_alloc(uint32_t n);
-	void init_page_list();
+	void mem_init();
 	struct page *alloc_page(alloc_mask mask);
 	void free_page(struct page *page);
 
@@ -167,12 +167,12 @@ static inline uint32_t phys_to_virt(physaddr_t phys_addr)
 
 static inline physaddr_t page_to_phys(struct page *page)
 {
-	return (page - page_allocator::page_list) << PAGE_SHIFT;
+	return (page - page_allocator::page_arr) << PAGE_SHIFT;
 }
 
 static inline struct page *phys_to_page(physaddr_t phys_addr)
 {
-	return &page_allocator::page_list[phys_addr >> PAGE_SHIFT];
+	return &page_allocator::page_arr[phys_addr >> PAGE_SHIFT];
 }
 
 static inline uint32_t page_to_virt(struct page *page)

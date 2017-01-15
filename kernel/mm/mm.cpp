@@ -3,7 +3,7 @@
 #include "../common/lib.h"
 #include "../sched/sched.h"
 
-struct page *page_allocator::page_list = NULL;
+struct page *page_allocator::page_arr = NULL;
 struct page *page_allocator::free_page_list = NULL;
 
 pte_t *memory_manager::get_pte(pde_t *pgdir, const void *va, int create)
@@ -139,19 +139,25 @@ void *page_allocator::boot_alloc(uint32_t n)
 	return (void *)saved_nextfree;
 }
 
-void page_allocator::init_page_list() {
+void page_allocator::mem_init()
+{
 	int pages_available = 0;
 	int n_pages = PBASE / PAGE_SIZE;
-	page_list = (struct page *)boot_alloc(n_pages * sizeof(struct page));
-	if (!page_list)
-		panic("Out of memory can't init page_list\n");
-	memset(page_list, 0x0, n_pages * sizeof(struct page));
+	page_arr = (struct page *)boot_alloc(n_pages * sizeof(struct page));
+	if (!page_arr)
+		panic("Out of memory can't init page_arr\n");
+	memset(page_arr, 0x0, n_pages * sizeof(struct page));
+
+	scheduler::task_arr = (struct task *)boot_alloc(N_MAX_TSK * sizeof(struct task));
+	if (!scheduler::task_arr)
+		panic("Out of memory can't init task_list\n");
+	memset(scheduler::task_arr, 0x0, N_MAX_TSK * sizeof(struct task));
 
 	for (int i = 0; i < n_pages; i++) {
 		uint32_t phys_addr = i << PAGE_SHIFT;
 		if (phys_to_virt(phys_addr) > round_up((uint32_t)boot_nextfree, PAGE_SIZE)) {
-			page_list[i].p_next = free_page_list;
-			free_page_list = &page_list[i];
+			page_arr[i].p_next = free_page_list;
+			free_page_list = &page_arr[i];
 			pages_available++;
 		}
 	}
