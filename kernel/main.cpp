@@ -5,6 +5,7 @@
 #include "common/kernel.h"
 #include "sched/sched.h"
 #include "debug/debug.h"
+#include "exception/exception.h"
 
 typedef void constructor_func(void);
 extern char __init_array_start[];
@@ -18,29 +19,8 @@ inline void global_constructors_init()
 	}
 }
 
-#if defined(__cplusplus)
-extern "C"
-#endif
-void exception_handler(uint32_t r0)
-{
-	uint32_t lr;
-	asm volatile("mov %[r], lr": [r]"=r" (lr)::);;
-	printk("Exception with code %x occured at address %x\n", r0, lr);
-	while(1){};
-}
 
-extern uint32_t vec_table;
-void install_vector_table()
-{
-	asm volatile("mcr p15, 0, %[r], c12, c0, 0": :[r]"r" (&vec_table):);
-}
-
-extern char _binary_app_start[];
-
-#if defined(__cplusplus)
-extern "C"
-#endif
-void kernel_main(uint32_t r0, uint32_t r1, uint32_t atags)
+extern "C" void kernel_main(uint32_t r0, uint32_t r1, uint32_t atags)
 {
 	(void) r0;
 	(void) r1;

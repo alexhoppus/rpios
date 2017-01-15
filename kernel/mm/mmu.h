@@ -4,8 +4,6 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#define SCTLR_M (1 << 0)
-
 class mmu_device {
 public:
 	/* System control register */

@@ -11,6 +11,8 @@
 #define IRQ_MODE  0x12
 #define FIQ_MODE  0x11
 
+#define MODE_MASK 0x1f
+
 #define I_BIT (1 << 7)
 #define F_BIT (1 << 6)
 
@@ -111,46 +113,6 @@ halt:
 	wfe
 	b halt
 
-// Vector table
-.align 4
-.globl vec_table
-vec_table:
-ldr pc,add_handler_00
-ldr pc,add_handler_04
-ldr pc,add_handler_08
-ldr pc,add_handler_0C
-ldr pc,add_handler_10
-ldr pc,add_handler_14
-ldr pc,add_handler_18
-ldr pc,add_handler_1C
-add_handler_00: .word _start
-add_handler_04: .word handler_04
-add_handler_08: .word handler_08
-add_handler_0C: .word handler_0C
-add_handler_10: .word handler_10
-add_handler_14: .word handler_14
-add_handler_18: .word handler_18
-add_handler_1C: .word handler_1C
-
-// Low-level vector table handlers
-.macro vec_handler num
-handler_\num:
-	mov r0,#0x\num
-	ldr r3,=exception_handler
-	bx r3
-.endm
-
-vec_handler 04
-vec_handler 08
-vec_handler 0C
-vec_handler 10
-vec_handler 14
-vec_handler 18
-vec_handler 1C
-
 und_stack: .word 0xc0026000
 dab_stack: .word 0xc0028000
 svc_stack: .word 0xc0032000
-
-
-
