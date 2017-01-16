@@ -1,7 +1,7 @@
 #include "lib.h"
 #include "../common/kernel.h"
 
-void memset(void *b, const unsigned char c, int len)
+extern "C" void memset(void *b, const unsigned char c, int len)
 {
 	unsigned char *p = (unsigned char *)b;
 	while (len > 0) {
@@ -11,7 +11,7 @@ void memset(void *b, const unsigned char c, int len)
 	}
 }
 
-void *memcpy(void *dst, const void *src, size_t n)
+extern "C" void *memmove(void *dst, const void *src, size_t n)
 {
 	const char *s;
 	char *d;
@@ -30,6 +30,11 @@ void *memcpy(void *dst, const void *src, size_t n)
 	return dst;
 }
 
+extern "C" void *memcpy(void *dst, const void *src, size_t n)
+{
+	return memmove(dst, src, n);
+}
+
 size_t strlen(const char* str)
 {
 	size_t ret = 0;
@@ -38,7 +43,7 @@ size_t strlen(const char* str)
 	return ret;
 };
 
-int memcmp(const void *s1, const void *s2, size_t n)
+extern "C" int memcmp(const void *s1, const void *s2, size_t n)
 {
 	register const char *cs1 = (char *)s1;
 	register const char *cs2 = (char *)s2;

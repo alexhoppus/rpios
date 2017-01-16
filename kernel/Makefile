@@ -1,4 +1,4 @@
-CFLAGS=-O2 -fno-exceptions -fno-rtti -fno-stack-protector -ffreestanding -fpic -nostdlib -Wall -DVPBASE=0xf2000000 -DPBASE=0x3f000000 -DDEBUG
+CFLAGS=-Os -fno-exceptions -fno-rtti -fno-stack-protector -ffreestanding -fpic -nostdlib -Wall -DVPBASE=0xf2000000 -DPBASE=0x3f000000 -DDEBUG
 CC=$(CROSS_COMPILE)g++
 EXECUTABLE=kernel
 

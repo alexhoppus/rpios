@@ -39,14 +39,15 @@ do { \
 } while(0)
 
 size_t strlen(const char* str);
-int memcmp(const void *s1, const void *s2, size_t n);
-void *memcpy(void *dst, const void *src, size_t n);
+extern "C" int memcmp(const void *s1, const void *s2, size_t n);
+extern "C" void *memcpy(void *dst, const void *src, size_t n);
+extern "C" void *memmove(void *dst, const void *src, size_t n);
 int str_to_int(const char *str);
 int pow(int x, unsigned int y);
 char* int_to_str(char *str, unsigned long val, int base);
 uint32_t div(uint32_t n, uint32_t d);
 char* itos(char *b, int i);
-void memset(void *b, const unsigned char c, int len);
+extern "C" void memset(void *b, const unsigned char c, int len);
 
 /* Rounding operations (work only when n is a power of 2) */
 static inline uint32_t round_down(uint32_t a, uint32_t n)
