@@ -142,7 +142,7 @@ void *page_allocator::boot_alloc(uint32_t n)
 void page_allocator::mem_init()
 {
 	int pages_available = 0;
-	int n_pages = PBASE / PAGE_SIZE;
+	int n_pages = RAM_OVERALL / PAGE_SIZE;
 	page_arr = (struct page *)boot_alloc(n_pages * sizeof(struct page));
 	if (!page_arr)
 		panic("Out of memory can't init page_arr\n");

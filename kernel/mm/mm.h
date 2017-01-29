@@ -54,8 +54,8 @@ typedef void * virtaddr_t;
 #define KPGD_VIRT	(KPGD_BASE + KERNBASE)
 #define KPGD_END	0x24000
 
-#define RAM_OVERALL	PBASE
-#define PERIPH_SIZE	0x01000000
+#define RAM_OVERALL	(VPBASE - KERNBASE)
+#define PERIPH_SIZE	0x01100000
 
 #define UTOP		0x40000000
 #define USTACKTOP	UTOP

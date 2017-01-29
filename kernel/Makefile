@@ -4,9 +4,9 @@ EXECUTABLE=kernel
 
 all: $(EXECUTABLE)
 
-kernel: boot.o main.o uart.o lib.o mmu.o mm.o console.o debug.o sched.o trap.o exception.o
+kernel: boot.o main.o uart.o lib.o mmu.o mm.o console.o debug.o sched.o trap.o exception.o timer.o irq.o
 	$(CC) -mapcs -T linker.ld $(CFLAGS) boot.o main.o uart.o lib.o mmu.o mm.o console.o \
-	debug.o sched.o trap.o exception.o $(USERDIR)/app1.blob $(USERDIR)/app2.blob -o $(EXECUTABLE)
+	debug.o sched.o trap.o exception.o timer.o irq.o $(USERDIR)/app1.blob $(USERDIR)/app2.blob -o $(EXECUTABLE)
 
 boot.o: boot.S
 	$(CC) $(CFLAGS) -c boot.S
@@ -40,5 +40,11 @@ trap.o: exception/trap.S
 
 exception.o: exception/exception.cpp
 	$(CC) $(CFLAGS) -c exception/exception.cpp
+
+timer.o: irq/timer.cpp
+	$(CC) $(CFLAGS) -c irq/timer.cpp
+
+irq.o: irq/irq.cpp
+	$(CC) $(CFLAGS) -c irq/irq.cpp
 clean:
 	rm *o kernel.bin kernel.elf

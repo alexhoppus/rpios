@@ -77,6 +77,7 @@ virtual_base: .word 0xc0000000
 .globl _start
 _start:
 	// Setup stack for modes
+	setup_stack #IRQ_MODE|I_BIT|F_BIT, irq_stack
 	setup_stack #UND_MODE|I_BIT|F_BIT, und_stack
 	setup_stack #DAB_MODE|I_BIT|F_BIT, dab_stack
 	setup_stack #SVC_MODE|I_BIT|F_BIT, svc_stack
@@ -113,6 +114,7 @@ halt:
 	wfe
 	b halt
 
-und_stack: .word 0xc0026000
-dab_stack: .word 0xc0028000
+irq_stack: .word 0xc0020000
+und_stack: .word 0xc0018000
+dab_stack: .word 0xc0016000
 svc_stack: .word 0xc0032000

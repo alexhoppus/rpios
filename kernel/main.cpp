@@ -39,7 +39,11 @@ extern "C" void kernel_main(uint32_t r0, uint32_t r1, uint32_t atags)
 	mm.palloc.mem_init();
 	check_mm();
 
+	irqc.init();
+	timer.init();
+
 	sc.init_task_list();
+
 	task *t1 = sc.alloc_task();
 	t1->init_vm();
 	t1->load_binary(_binary_app1_start);
@@ -48,6 +52,7 @@ extern "C" void kernel_main(uint32_t r0, uint32_t r1, uint32_t atags)
 	t2->init_vm();
 	t2->load_binary(_binary_app2_start);
 
+	dprintk("sc run()\n");
 	sc.run();
 	while(1) {};
 }

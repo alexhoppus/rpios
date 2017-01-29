@@ -7,6 +7,9 @@ void install_vector_table(void);
 
 extern "C" void trapret(void);
 
+#define I_BIT (1 << 7)
+#define F_BIT (1 << 6)
+
 static inline void set_cpsr(uint32_t reg)
 {
 	asm volatile("msr cpsr, %[r]": :[r]"r" (reg):);
@@ -29,6 +32,16 @@ static inline uint32_t get_spsr(void)
 	uint32_t reg;
 	asm volatile("mrs %[r], spsr": [r]"=r" (reg)::);
 	return reg;
+}
+
+static inline void irq_disable()
+{
+	set_cpsr(get_cpsr() | I_BIT);
+}
+
+static inline void irq_enable()
+{
+	set_cpsr(get_cpsr() & (~I_BIT));
 }
 
 #define N_GEN_REGS 13

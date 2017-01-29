@@ -40,7 +40,7 @@ int task::load_binary(char *binary)
 	sp -= sizeof(struct trapframe);
 	tf = (struct trapframe *) sp;
 	memset(tf, 0x0, sizeof(struct trapframe));
-	tf->spsr = ((get_cpsr() & (~MODE_MASK)) | MODE_USR);
+	tf->spsr = MODE_USR | F_BIT;
 	tf->sp_usr = USTACKTOP;
 	tf->pc = elf->e_entry;
 

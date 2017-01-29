@@ -27,8 +27,6 @@ int main(int argc, char **argv)
 	while(1) {
 		puts((char*)"Hey i'am app1!\n");
 		delay(1000000);
-		yield();
 	}
-	//mmio_write(AUX_MU_IO_REG, '*');
 	return 0;
 }
