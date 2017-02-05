@@ -1,5 +1,5 @@
 #include "lib.h"
-#include "../common/kernel.h"
+#include "kernel.h"
 
 extern "C" void memset(void *b, const unsigned char c, int len)
 {

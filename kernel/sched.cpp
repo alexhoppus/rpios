@@ -1,7 +1,7 @@
 #include "sched.h"
 #include "elf.h"
-#include "../common/kernel.h"
-#include "../common/lib.h"
+#include "kernel.h"
+#include "lib.h"
 
 class task *scheduler::task_arr = NULL;
 

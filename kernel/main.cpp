@@ -1,11 +1,11 @@
-#include "uart/uart.h"
-#include "common/stubs.h"
-#include "common/lib.h"
-#include "mm/mm.h"
-#include "common/kernel.h"
-#include "sched/sched.h"
-#include "debug/debug.h"
-#include "exception/exception.h"
+#include "uart.h"
+#include "stubs.h"
+#include "lib.h"
+#include "mm.h"
+#include "kernel.h"
+#include "sched.h"
+#include "debug.h"
+#include "exception.h"
 
 typedef void constructor_func(void);
 extern char __init_array_start[];

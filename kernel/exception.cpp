@@ -1,6 +1,6 @@
 #include "exception.h"
-#include "../sched/sched.h"
-#include "../common/kernel.h"
+#include "sched.h"
+#include "kernel.h"
 
 struct desc {
 	uint32_t num;

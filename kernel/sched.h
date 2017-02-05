@@ -2,9 +2,9 @@
 #define SCHED_H
 #include <stddef.h>
 #include <stdint.h>
-#include "../common/lib.h"
-#include "../mm/mm.h"
-#include "../exception/exception.h"
+#include "lib.h"
+#include "mm.h"
+#include "exception.h"
 #include "elf.h"
 
 #define N_MAX_TSK	100

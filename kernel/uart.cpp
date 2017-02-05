@@ -1,7 +1,7 @@
 #include "uart.h"
-#include "../common/lib.h"
-#include "../common/system.h"
-#include "../common/gpio.h"
+#include "lib.h"
+#include "system.h"
+#include "gpio.h"
 
 rpi2_uart_device::rpi2_uart_device() : aux_mu_io_reg(AUX_MU_IO_REG), aux_mu_ier_reg(AUX_MU_IER_REG),
 	aux_mu_iir_reg(AUX_MU_IIR_REG), aux_mu_lcr_reg(AUX_MU_LCR_REG), aux_mu_mcr_reg(AUX_MU_MCR_REG),

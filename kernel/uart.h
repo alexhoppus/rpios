@@ -7,10 +7,10 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include "../common/mmio.h"
-#include "../common/gpio.h"
-#include "../common/auxillary.h"
-#include "../console/console.h"
+#include "mmio.h"
+#include "gpio.h"
+#include "auxillary.h"
+#include "console.h"
 
 class rpi2_uart_device : public console {
 public:

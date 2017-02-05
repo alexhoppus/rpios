@@ -1,5 +1,6 @@
+KERNELDIR=kernel
 RPI_OS_BUILD_DIR=build
-if [ ! -d $RPI_OS_BUILD_DIR ]; then
+if [ ! -d $KERNELDIR/$RPI_OS_BUILD_DIR ]; then
 	echo "No build dir found"
 	exit
 fi
@@ -14,12 +15,12 @@ echo -n "blabla" > $1
 # dummy flush
 sleep 0.1
 # Sending size
-ls -la ./$RPI_OS_BUILD_DIR/kernel.bin | awk {'print $5'} > $1
+ls -la $KERNELDIR/$RPI_OS_BUILD_DIR/kernel.bin | awk {'print $5'} > $1
 # dummy flush
 sleep 0.1
 # Sending image
 echo "Sending image..."
-cat ./$RPI_OS_BUILD_DIR/kernel.bin > $1
+cat $KERNELDIR/$RPI_OS_BUILD_DIR/kernel.bin > $1
 echo "Done"
 
 

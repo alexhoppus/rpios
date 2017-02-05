@@ -1,6 +1,6 @@
 #ifndef GPIO_H
 #define GPIO_H
-#include "../common/mmio.h"
+#include "mmio.h"
 
 #define GPFSEL1         (VPBASE + 0x00200004)
 #define GPSET0          (VPBASE + 0x0020001C)

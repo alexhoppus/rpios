@@ -2,7 +2,7 @@
 #define MM_H
 #include <stddef.h>
 #include <stdint.h>
-#include "../common/lib.h"
+#include "lib.h"
 #include "mmu.h"
 
 /* Page table entry represent section mapping

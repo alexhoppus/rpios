@@ -1,7 +1,7 @@
 #include "console.h"
 #include <stdarg.h>
-#include "../common/kernel.h"
-#include "../common/lib.h"
+#include "kernel.h"
+#include "lib.h"
 
 // Get an unsigned int of various possible sizes from a varargs list,
 // depending on the lflag parameter.

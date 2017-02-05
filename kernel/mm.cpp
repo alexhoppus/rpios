@@ -1,7 +1,7 @@
 #include "mm.h"
-#include "../common/kernel.h"
-#include "../common/lib.h"
-#include "../sched/sched.h"
+#include "kernel.h"
+#include "lib.h"
+#include "sched.h"
 
 struct page *page_allocator::page_arr = NULL;
 struct page *page_allocator::free_page_list = NULL;

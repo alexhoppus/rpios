@@ -1,6 +1,6 @@
-#include "../common/lib.h"
-#include "../mm/mm.h"
-#include "../common/kernel.h"
+#include "lib.h"
+#include "mm.h"
+#include "kernel.h"
 #include "debug.h"
 
 #if DEBUG
